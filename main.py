@@ -1,13 +1,30 @@
 import cv2
 
-cap = cv2.VideoCapture(0) # video capture source camera (Here webcam of laptop) 
-ret,frame = cap.read() # return a single frame in variable `frame`
+def ORB(img_color):
+    img = cv2.cvtColor(img_color,cv2.COLOR_RGB2GRAY)
+    orb = cv2.ORB_create()
+    keypoints = orb.detect(img,None)
+    keypoints, des = orb.compute(img, keypoints)
+    return keypoints
 
-while(True):
-    cv2.imshow('img1',frame) #display the captured image
-    if cv2.waitKey(1) & 0xFF == ord('y'): #save on pressing 'y' 
-        cv2.imwrite('images/c1.png',frame)
-        cv2.destroyAllWindows()
-        break
+def SIFT(img_color):
+    img = cv2.cvtColor(img_color,cv2.COLOR_RGB2GRAY)
+    sift = cv2.SIFT_create()
+    keypoints, des = sift.detectAndCompute(img,None)
+    return keypoints
 
-cap.release()
+def define_keypoints(input_img,algorythm_name):
+    img = img
+    if algorythm_name == "Orb":
+        ORB(input_img)
+    elif algorythm_name == "Sift":
+        SIFT(input_img)
+    else:
+        return('Err')
+
+if __name__ == "__main__":
+    image='/workspaces/photo_2_3D/demo/IMG_20230331_063114.jpg'
+    print(define_keypoints(image,'Orb'))
+
+
+    
